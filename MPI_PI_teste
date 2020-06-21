@@ -24,14 +24,13 @@ int main (int argc, char* argv[])
     //Get processes Number
     MPI_Comm_size (MPI_COMM_WORLD, &size);
 	
-	// Get the name of the processor
-	char processor_name[MPI_MAX_PROCESSOR_NAME];
-	int name_len;
-	MPI_Get_processor_name(processor_name, &name_len);
-	
-	//print mensagem
-	printf("Hello world from processor %s, rank %d out of %d processors\n",
-         processor_name, rank, size);
+    // Get the name of the processor
+    char processor_name[MPI_MAX_PROCESSOR_NAME];
+    int name_len;
+    MPI_Get_processor_name(processor_name, &name_len);
+
+    //print mensagem
+    printf("Hello world from processor %s, rank %d out of %d processors\n", processor_name, rank, size);
     
     //Synchronize all processes and get the begin time
     MPI_Barrier(MPI_COMM_WORLD);
