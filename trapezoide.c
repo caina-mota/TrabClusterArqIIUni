@@ -47,6 +47,7 @@ int main (int argc, char* argv[])
     
     // Combina todos os elementos presentes no buffer de cada processo do grupo usando a operação definida como parâmetro 
     // e coloca o valor resultante no buffer do processo especificado 
+    // neste caso 1/4 do valor da área da função definida, ou seja, um trapezóide com área equivalente a 1/4 valor de pi
     MPI_Reduce(&result, &sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
     
     //Sincroniza todos os processos antes que o restante do programa seja realizado no nó mestre e pega o tempo final
