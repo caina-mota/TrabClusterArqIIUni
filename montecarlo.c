@@ -44,7 +44,7 @@ int main (int argc, char* argv[])
         x=rand()/(RAND_MAX+1.0);
         y=rand()/(RAND_MAX+1.0);
         if(x*x+y*y<1.0)
-            result++;
+        result++;
     }
     
     //Sum up all results
