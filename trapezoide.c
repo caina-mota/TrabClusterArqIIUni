@@ -38,16 +38,16 @@ int main (int argc, char* argv[])
     // Cada processo calcula parte do sum, ou seja, um quarto do valor da área do trapezóide
     for (i=rank; i<N; i+=size)
     {
-        //calcula 1/4 da área da função
+        //calcula a área do trapezoide da função
         //realizando o somatorio para um ponto específico dentro da área definida conforme o valor do laço da for para o trapezio da função
-        // Ou seja, é calculado um valor bruto que representa 1/4 do valor de pi ao final do laço for
+        // Ou seja, é calculado um valor bruto/inteiro que representa o valor de pi ao final do laço for
         x2=d2*i*i;
-        result+=1.0/(1.0+x2);
+        result+=4.0/(1.0+x2);
     }
     
     // Combina todos os elementos presentes no buffer de cada processo do grupo usando a operação definida como parâmetro 
     // e coloca o valor resultante no buffer do processo especificado 
-    // neste caso 1/4 do valor da área da função definida, ou seja, um trapezóide com área equivalente a 1/4 valor de pi
+    // neste caso o valor da área da função definida, ou seja, um trapezóide com área equivalente ao valor de pi
     MPI_Reduce(&result, &sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
     
     //Sincroniza todos os processos antes que o restante do programa seja realizado no nó mestre e pega o tempo final
@@ -57,8 +57,8 @@ int main (int argc, char* argv[])
     //Calcula o PI no nó mestre
     if (rank==0)
     {
-        // pi é igual a multiplicação da aproximação do quadrante calculado por 4, multiplicando-se tambem o valor d para a precisão correta do valor.
-        pi=4*d*sum;
+        // pi é igual a multiplicação do valor d 1*10^-16 para a precisão correta do valor.
+        pi=d*sum;
         printf("np=%2d;    Time=%fs;    PI=%lf\n", size, end-begin, pi);
     }
     
