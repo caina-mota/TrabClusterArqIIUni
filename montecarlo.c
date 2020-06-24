@@ -53,8 +53,9 @@ int main (int argc, char* argv[])
         	result++;
     }
     
-    // Soma todos os resultados e divide pela quantidade de processos realizados, reduzindo os valores de resultado para um unico valor 
-    // que representa um quadrante da área do circulo
+    // Combina todos os elementos presentes no buffer de cada processo do grupo usando a operação definida como parâmetro 
+    // e coloca o valor resultante no buffer do processo especificado 
+    // neste caso 1/4 da área do circulo calculada com valores inteiros
     MPI_Reduce(&result, &sum, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
     
     //Sincroniza todos os processos antes que o restante do programa seja realizado no nó mestre
@@ -67,7 +68,7 @@ int main (int argc, char* argv[])
     {
 	// pi é igual a multiplicação da aproximação do quadrante calculado por 4, multiplicando-se tambem o valor d para a precisão correta do valor.
         pi=4*d*sum;
-        printf("np=%2d;    Time=%fs;    PI=%0.4f\n", size, end-begin, pi);
+        printf("np=%2d;    Time=%fs;    PI=%0.6f\n", size, end-begin, pi);
     }
     
     //finaliza se ocorrer erro
