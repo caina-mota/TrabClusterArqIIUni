@@ -1,13 +1,14 @@
 // metodo trapezoide adaptado de <https://github.com/kiwenlau/MPI_PI/blob/master/Trapezoid2/mpi_pi.c>
-// This program is to caculate PI using MPI
-// The algorithm is based on integral representation of PI. If f(x)=4/(1+x^2), then PI is the intergral of f(x) from 0 to 1
+// O programa calcula PI pelo método de trapezóide usando a biblioteca MPI
+// Esse metodo tem como base a soma das ́areas dos trapezios que  compoem  a ́area  sob  uma  função. 
+// A partir da função f(x)= 4/(1+x^2), PI é a integral definida de f(x) de 0 a 1
 
 #include <stdio.h>
 #include <mpi.h>
 
-#define N 1E7
-#define d 1E-7
-#define d2 1E-14
+#define N 1E8
+#define d 1E-8
+#define d2 1E-16
 
 int main (int argc, char* argv[])
 {
@@ -16,40 +17,46 @@ int main (int argc, char* argv[])
     
     error=MPI_Init (&argc, &argv);
     
-    //Get process ID
+    //Pega o rank do processo, ou seja, qual parte do processo está sendo processada em determinado nó
     MPI_Comm_rank (MPI_COMM_WORLD, &rank);
     
-    
-    //Get processes Number
+    //Pega a quantidade de processos realizados, a quantidade de vezes que o programa é dividido em numero de processos
     MPI_Comm_size (MPI_COMM_WORLD, &size);
-    // Get the name of the processor
+    
+    // Pega o nome do nó em que o processo está sendo realizado
     char processor_name[MPI_MAX_PROCESSOR_NAME];
     int name_len;
     MPI_Get_processor_name(processor_name, &name_len);
-    //print processor rank and quantity of nodes
-    printf("Hello world from processor %s, rank %d out of %d processors\n", processor_name, rank, size);
+    // Printa a mensagem indicando qual o rpocessador, qual o rank e a quantidade de processos em que o programa está rodando
+    printf("Processor %s, rank %d out of %d processors\n", processor_name, rank, size);
     
-    //Synchronize all processes and get the begin time
+    // Sincroniza todos os processos para que os nós iniciem em conjunto a processar a mesma parte do codigo.
     MPI_Barrier(MPI_COMM_WORLD);
+    // Indica a o inicio da contagem de tempo e pega o valor
     begin = MPI_Wtime();
     
-    //Each process will caculate a part of the sum
+    // Cada processo calcula parte do sum, ou seja, um quarto do valor da área do trapezóide
     for (i=rank; i<N; i+=size)
     {
+        //calcula 1/4 da área da função
+        //realizando o somatorio para um ponto específico dentro da área definida conforme o valor do laço da for para o trapezio da função
+        // Ou seja, é calculado um valor bruto que representa 1/4 do valor de pi ao final do laço for
         x2=d2*i*i;
         result+=1.0/(1.0+x2);
     }
     
-    //Sum up all results
+    // Combina todos os elementos presentes no buffer de cada processo do grupo usando a operação definida como parâmetro 
+    // e coloca o valor resultante no buffer do processo especificado 
     MPI_Reduce(&result, &sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
     
-    //Synchronize all processes and get the end time
+    //Sincroniza todos os processos antes que o restante do programa seja realizado no nó mestre e pega o tempo final
     MPI_Barrier(MPI_COMM_WORLD);
     end = MPI_Wtime();
     
-    //Caculate and print PI
+    //Calcula o PI no nó mestre
     if (rank==0)
     {
+        // pi é igual a multiplicação da aproximação do quadrante calculado por 4, multiplicando-se tambem o valor d para a precisão correta do valor.
         pi=4*d*sum;
         printf("np=%2d;    Time=%fs;    PI=%lf\n", size, end-begin, pi);
     }
