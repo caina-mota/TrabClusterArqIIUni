@@ -59,7 +59,7 @@ int main (int argc, char* argv[])
     {
         // pi é igual a multiplicação do valor d 1*10^-16 para a precisão correta do valor.
         pi=d*sum;
-        printf("np=%2d;    Time=%fs;    PI=%lf\n", size, end-begin, pi);
+        printf("np=%2d;    Time=%fs;    PI=%0.8f\n", size, end-begin, pi);
     }
     
     error=MPI_Finalize();
