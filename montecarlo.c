@@ -68,7 +68,7 @@ int main (int argc, char* argv[])
     {
 	// pi é igual a multiplicação da aproximação do quadrante calculado por 4, multiplicando-se tambem o valor d para a precisão correta do valor.
         pi=4*d*sum;
-        printf("np=%2d;    Time=%fs;    PI=%0.6f\n", size, end-begin, pi);
+        printf("np=%2d; Time=%fs; PI=%0.6f\n", size, end-begin, pi);
     }
     
     //finaliza se ocorrer erro
