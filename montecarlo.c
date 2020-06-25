@@ -66,7 +66,9 @@ int main (int argc, char* argv[])
     //Calcula o PI no nó mestre
     if (rank==0)
     {
-	// pi é igual a multiplicação da aproximação do quadrante calculado por 4, multiplicando-se tambem o valor d para a precisão correta do valor.
+	// pi é igual a multiplicação do quadrante calculado por 4, 
+	// multiplicando-se também o valor d = 1* 10^-8 para a 
+	// precisão correta do valor.
         pi=4*d*sum;
         printf("np=%2d; Time=%fs; PI=%0.6f\n", size, end-begin, pi);
     }
