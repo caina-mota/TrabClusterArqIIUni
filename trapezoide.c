@@ -57,9 +57,10 @@ int main (int argc, char* argv[])
     //Calcula o PI no nó mestre
     if (rank==0)
     {
-        // pi é igual a multiplicação do valor d 1*10^-8 para a precisão correta do valor.
+        // pi é igual a multiplicação do valor d 1*10^-8 para a 
+        // precisão correta do valor.
         pi=d*sum;
-        printf("np=%2d;    Time=%fs;    PI=%0.8f\n", size, end-begin, pi);
+        printf("np=%2d; Time=%fs; PI=%0.8f\n", size, end-begin, pi);
     }
     
     error=MPI_Finalize();
